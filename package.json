@@ -1,6 +1,6 @@
 {
   "name": "bzfm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fuzzy bookmark manager for files and directories (Node/TypeScript rewrite of zfm)",
   "main": "dist/cli/index.js",
   "bin": {
@@ -38,9 +38,11 @@
     "README.md",
     "LICENSE"
   ],
+  "dependencies": {
+    "commander": "^14.0.0"
+  },
   "devDependencies": {
     "@types/node": "^24.10.1",
-    "commander": "^14.02",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vitest": "^2.1.4"
