@@ -1,6 +1,6 @@
 {
   "name": "bzfm",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fuzzy bookmark manager for files and directories (Node/TypeScript rewrite of zfm)",
   "main": "dist/cli/index.js",
   "bin": {
