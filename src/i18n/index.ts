@@ -1,10 +1,8 @@
 /**
- * i18n 入口：负责加载 JSON 语言包并提供翻译函数。
+ * i18n 入口：提供简单的多语言支持。
  *
- * 设计原则：
- * - 语言包以 JSON 存储，便于在不改动源码的情况下增加新语言；
- * - 内置 en_us / zh_cn JSON，通过 require 静态打包，避免运行时 I/O；
- * - 外部扩展可以通过在未来支持的搜索路径中放置 JSON 文件（留有演进空间）。
+ * 采用内联字典而不是外部 JSON 文件，避免运行时缺少资源的问题，
+ * 同时保持实现足够简单，符合 KISS 原则。
  */
 
 export type Locale = 'en_us' | 'zh_cn' | (string & {});
@@ -32,12 +30,53 @@ export type MessageKey =
   | 'error.fzf.failed'
   | 'error.fzf.non_zero_exit';
 
-// 使用 require 保证 JSON 在构建时被打包为静态对象。
-// 对于新增语言，只需新增对应的 JSON 文件并在此处扩展。
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const enUs = require('./locales/en_us.json') as Record<MessageKey, string>;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const zhCn = require('./locales/zh_cn.json') as Record<MessageKey, string>;
+const enUs: Record<MessageKey, string> = {
+  'cli.description': 'Fuzzy bookmark manager for files and directories.',
+  'cli.option.files': 'Only operate on file bookmarks',
+  'cli.option.dirs': 'Only operate on directory bookmarks',
+  'cli.option.multi': 'Allow multiple selection',
+  'cli.option.pattern': 'Initial query pattern passed to fzf',
+  'cli.option.version': 'output the version number',
+  'cli.command.list.description': 'List bookmarks',
+  'cli.command.add.description': 'Add path(s) to bookmarks',
+  'cli.command.select.description': 'Interactively select bookmark(s) using fzf',
+  'cli.command.query.description': 'Query bookmark matching a pattern using fzf',
+  'cli.command.fix.description': 'Remove bookmarks that no longer exist',
+  'cli.command.clear.description': 'Clear all bookmarks',
+  'cli.command.edit.description': 'Edit bookmark file using $EDITOR',
+  'cli.command.init.description': 'Generate shell integration script for zsh / fish',
+  'cli.add.added_to': 'Added to',
+  'cli.add.total_bookmarks': 'Total bookmarks',
+  'cli.fix.removed_entries': 'removed {count} entries',
+  'cli.clear.deleted': 'bookmarks deleted!',
+  'error.bookmark_file.create_failed': 'Failed to create bookmark file: {path}. Reason: {reason}',
+  'error.fzf.failed': 'Failed to run fzf: {reason}',
+  'error.fzf.non_zero_exit': 'fzf exited with non-zero code: {code}',
+};
+
+const zhCn: Record<MessageKey, string> = {
+  'cli.description': '面向文件和目录的模糊书签管理工具。',
+  'cli.option.files': '仅操作文件类型书签',
+  'cli.option.dirs': '仅操作目录类型书签',
+  'cli.option.multi': '允许多选',
+  'cli.option.pattern': '作为初始查询传递给 fzf 的模式字符串',
+  'cli.option.version': '输出版本号',
+  'cli.command.list.description': '列出书签',
+  'cli.command.add.description': '添加路径到书签',
+  'cli.command.select.description': '使用 fzf 交互选择书签',
+  'cli.command.query.description': '使用 fzf 根据模式查询书签',
+  'cli.command.fix.description': '移除已不存在的书签条目',
+  'cli.command.clear.description': '清空所有书签',
+  'cli.command.edit.description': '通过 $EDITOR 编辑书签文件',
+  'cli.command.init.description': '集成脚本到 zsh / fish',
+  'cli.add.added_to': '已添加到',
+  'cli.add.total_bookmarks': '当前书签总数',
+  'cli.fix.removed_entries': '已移除 {count} 条记录',
+  'cli.clear.deleted': '所有书签已删除！',
+  'error.bookmark_file.create_failed': '无法创建书签文件: {path}。原因: {reason}',
+  'error.fzf.failed': '执行 fzf 失败: {reason}',
+  'error.fzf.non_zero_exit': 'fzf 退出码非零: {code}',
+};
 
 const builtinDictionaries: Record<string, Record<MessageKey, string>> = {
   en_us: enUs,
